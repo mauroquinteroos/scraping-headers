@@ -1,8 +1,11 @@
+const dotenv = require("dotenv");
 const express = require("express");
 const getHeaders = require("./app");
 
+dotenv.config();
+
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
@@ -14,6 +17,6 @@ app.get("/api/headers", async (req, res) => {
   return res.status(200).json({ data });
 });
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on port ${port}`);
 });
