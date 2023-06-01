@@ -5,6 +5,7 @@ async function getHeaders() {
   puppeteer.use(stealthPlugin());
 
   const browser = await puppeteer.launch({
+    headless: "new",
     args: [
       "--disable-setuid-sandbox",
       "--no-sandbox",
@@ -25,12 +26,12 @@ async function getHeaders() {
     await page.waitForSelector("pre");
 
     const content = await page.$eval("pre", (el) => el.textContent);
-    console.log("headers:", headers);
+    console.log("content:", content);
 
     return content;
   } catch (error) {
-    console.error(e);
-    res.send(`Something went wrong while running Puppeteer: ${e}`);
+    console.error(error);
+    return `Something went wrong while running Puppeteer: ${e}`;
   } finally {
     await browser.close();
   }
