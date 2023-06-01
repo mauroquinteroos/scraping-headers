@@ -26,7 +26,7 @@ async function getHeaders() {
     return content;
   } catch (error) {
     console.error(error);
-    return `Something went wrong while running Puppeteer: ${e}`;
+    return `Something went wrong while running Puppeteer: ${error}`;
   } finally {
     await browser.close();
   }
