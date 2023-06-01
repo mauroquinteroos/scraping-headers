@@ -22,4 +22,5 @@ app.get("/api/scrape", async (req, res) => {
 
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on port ${port}`);
+  console.log(`Node environment is ${process.env.NODE_ENV}`);
 });

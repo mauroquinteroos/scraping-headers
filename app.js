@@ -4,20 +4,20 @@ const stealthPlugin = require("puppeteer-extra-plugin-stealth");
 async function getHeaders() {
   puppeteer.use(stealthPlugin());
 
-  try {
-    const browser = await puppeteer.launch({
-      args: [
-        "--disable-setuid-sandbox",
-        "--no-sandbox",
-        "--single-process",
-        "--no-zygote",
-      ],
-      executablePath:
-        process.env.NODE_ENV === "production"
-          ? process.env.PUPPETEER_EXECUTABLE_PATH
-          : puppeteer.executablePath(),
-    });
+  const browser = await puppeteer.launch({
+    args: [
+      "--disable-setuid-sandbox",
+      "--no-sandbox",
+      "--single-process",
+      "--no-zygote",
+    ],
+    executablePath:
+      process.env.NODE_ENV === "production"
+        ? process.env.PUPPETEER_EXECUTABLE_PATH
+        : puppeteer.executablePath(),
+  });
 
+  try {
     const page = await browser.newPage();
     await page.goto("https://www.httpbin.org/headers");
     await page.setViewport({ width: 1080, height: 1024 });
