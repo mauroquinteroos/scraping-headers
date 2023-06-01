@@ -3,19 +3,37 @@ const stealthPlugin = require("puppeteer-extra-plugin-stealth");
 
 async function getHeaders() {
   puppeteer.use(stealthPlugin());
-  const browser = await puppeteer.launch({
-    headless: "new",
-  });
 
-  const page = await browser.newPage();
-  await page.goto("https://www.httpbin.org/headers");
+  try {
+    const browser = await puppeteer.launch({
+      args: [
+        "--disable-setuid-sandbox",
+        "--no-sandbox",
+        "--single-process",
+        "--no-zygote",
+      ],
+      executablePath:
+        process.env.NODE_ENV === "production"
+          ? process.env.PUPPETEER_EXECUTABLE_PATH
+          : puppeteer.executablePath(),
+    });
 
-  await page.waitForSelector("pre");
+    const page = await browser.newPage();
+    await page.goto("https://www.httpbin.org/headers");
+    await page.setViewport({ width: 1080, height: 1024 });
 
-  const content = await page.$eval("pre", (el) => el.textContent);
-  await browser.close();
+    await page.waitForSelector("pre");
 
-  return content;
+    const content = await page.$eval("pre", (el) => el.textContent);
+    console.log("headers:", headers);
+
+    return content;
+  } catch (error) {
+    console.error(e);
+    res.send(`Something went wrong while running Puppeteer: ${e}`);
+  } finally {
+    await browser.close();
+  }
 }
 
 module.exports = getHeaders;
